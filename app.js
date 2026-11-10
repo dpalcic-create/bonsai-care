@@ -214,11 +214,11 @@ function tasksFor(s, month, zone, lastRepot) {
   return tasks;
 }
 function nextRepotLabel(s, month) {
-  const ms = s.repotMonths || [];
+  const ms = (s.repotMonths || []).slice().sort((a,b)=>a-b);
   if (!ms.length) return s.repotWhen;
-  if (ms.includes(month)) return "Open now (" + ms.map(m => MONTHS_SHORT[m-1]).join("–") + ")";
-  const next = ms.find(m => m > month) ?? ms[0];
-  return "Opens " + MONTHS_SHORT[next-1] + (ms.length > 1 ? " (" + ms.map(m => MONTHS_SHORT[m-1]).join("–") + ")" : "");
+  const span = ms.length === 1 ? MONTHS_SHORT[ms[0]-1] : MONTHS_SHORT[ms[0]-1] + "–" + MONTHS_SHORT[ms[ms.length-1]-1];
+  if (ms.includes(month)) return "Open now · " + span;
+  return "Opens " + span;
 }
 
 /* ---------- routing ---------- */
